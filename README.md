@@ -2,7 +2,7 @@
 
 1.  Summary. This program performs simple noise reduction on images using MPI and C.
 
-# PPM. 
+## PPM. 
 The Portable Pixmap Format (PPM) uses ASCII encoding of pixels for image files; for
 details, see https://en.wikipedia.org/wiki/Netpbm_format#PPM_example. This program only works with P3 encoding.
 ## Mean filter. 
@@ -26,7 +26,7 @@ For details, see https://en.wikipedia.org/wiki/Median_filter.
 green, and blue independently. That is, the average of all red, all green, and all blue pixels in the
 window.
 
-# Work Distribution
+## Work Distribution
 The MPI program performs the following tasks:
 • Process 0 reads a given input PPM file and distributes pixel data to p processes.
 • Each process applies an N × N filter to the pixels distributed to this process.
