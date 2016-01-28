@@ -1,0 +1,6 @@
+Given P processes, a windowsize W, and an image of width W and height H, work is distributed as follows:
+        -Process 0 sends process <i> (i > 0, i < P - 1) H/P + 2*W rows, plus an additional row if i < H%P. Process <i> will recieve rows [i*H/P - W/2, i*H/P + H/P + W/2 (+ 1 if i < H % P)]]. The extra W/2 rows above and below [i*H/P, i*H/P + H/P] are sent to ensure that the median/mean calculations performed at the boundaries use all pixels that it should.
+        -Process 0 sends process <P-1>  H/P + W rows, plus an additional row if P-1 < H%P. Process <P-1> will recieve rows [(P-1)*H/P - W/2, (P-1)*H/P + H%P (+ 1 if P-1 < H % P)]. The extra W/2 rows above
+ve [(P-1)*H/P,(P-1)*H/P + H/P] are sent to ensure that the median/mean calculations performed at the top boundary uses all pixels that it should.
+        -For every process <i> (i != 0), rows [i*(H/P), i*(H/P) + H/P (+ 1 if i < H % P)] are sent back to process 0.
+
