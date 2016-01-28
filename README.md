@@ -1,6 +1,6 @@
 # PPM-Filtering
 
-This program performs simple noise reduction on images using MPI and C.
+1.  Summary. This program performs simple noise reduction on images using MPI and C.
 
 1.1. PPM. The Portable Pixmap Format (PPM) uses ASCII encoding of pixels for image files; for
 details, see https://en.wikipedia.org/wiki/Netpbm_format#PPM_example. This program only works with P3 encoding.
