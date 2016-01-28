@@ -27,6 +27,7 @@ The MPI program performs the following tasks:
 a file in PPM format.
 
 ### Make and run
+You MUST have MPI installed on your system to run this program.
 
 The project includes makefile such that when make is typed, an executable with name ppmf is
 created in the current directory.
