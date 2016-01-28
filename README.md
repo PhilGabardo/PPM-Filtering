@@ -8,17 +8,7 @@ The Portable Pixmap Format (PPM) uses ASCII encoding of pixels for image files; 
 details, see https://en.wikipedia.org/wiki/Netpbm_format#PPM_example. This program only works with P3 encoding.
 ### Mean filter. 
 A simple filter for noise reduction in image processing is to replace a pixel by
-the average of the neighbouring pixels in a “sliding” window. For example, with a 3 × 3 window
-and the numbers on the left,
-45 4 255
-78 124 56
-1 0 34
-⇒
-× × ×
-× 66 ×
-× × ×
-we obtain the center of the window on the right as (rounded to the nearest integer)
-(45 + 4 + 255 + 78 + 124 + 56 + 1 + 0 + 34)/9 = 66.
+the average of the neighbouring pixels in a “sliding” window.
 Such a window goes through each entry and replaces it by the mean of the entries in the window,
 where the entry in the middle is included in computing the average.
 ### Median filter. 
