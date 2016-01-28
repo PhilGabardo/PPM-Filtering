@@ -31,9 +31,9 @@ window.
 
 ### Work Distribution
 The MPI program performs the following tasks:
-• Process 0 reads a given input PPM file and distributes pixel data to p processes.
-• Each process applies an N × N filter to the pixels distributed to this process.
-• When finished, each process sends the result to process 0, which stores the filtered image in
+* Process 0 reads a given input PPM file and distributes pixel data to p processes.
+* Each process applies an N × N filter to the pixels distributed to this process.
+* When finished, each process sends the result to process 0, which stores the filtered image in
 a file in PPM format.
 
 ### Make and run
@@ -44,11 +44,11 @@ created in the current directory.
 The program is trun as
 mpirun -np p ./ppmf input.ppm output.ppm N F
 where
-• p is the number of processes
-• input.ppm is the name of the input file
-• output.ppm is the name of the output file
-• N specifies the size of the window, that is N × N window, where N is an odd integer ≥ 3.
-• F is the type of filtering and can have a value A meaning mean filter, or a value M meaning
+* p is the number of processes
+* input.ppm is the name of the input file
+* output.ppm is the name of the output file
+* N specifies the size of the window, that is N × N window, where N is an odd integer ≥ 3.
+* F is the type of filtering and can have a value A meaning mean filter, or a value M meaning
 median filter.
 For example,
 mpirun -np 4 ./ppmf input.ppm output.ppm 3 A
