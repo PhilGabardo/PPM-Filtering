@@ -4,14 +4,26 @@
 #include <stdio.h>
 int main(int argc, char** argv)
 {
+	
+	// parsed image, and filtered image
 	RGB *image, *filteredImage;
+	
+	// image attributes
 	int global_width, global_height;
 	int width, height, max;
+	Dimension *my_dim;
+	
+	// process information
 	int my_rank, p;
+	
+	// loop variables
 	int dest, source;
 	int offset;
+	
+	
+	
+	// MPI boilerplate
 	MPI_Status status;
-	Dimension *my_dim;
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
@@ -19,6 +31,7 @@ int main(int argc, char** argv)
 	int tag = 0;
 	int windowSize = atoi(argv[3]);
 	
+	// Process 0 parses the PPM file and distributes size attributes
 	if (my_rank == 0){
 		image = readPPM(argv[1], &global_width, &global_height, &max);
 		offset = 0;
@@ -27,6 +40,8 @@ int main(int argc, char** argv)
 			if (dest < global_height % p)
 				rowsToCompute++;
 			offset += rowsToCompute;
+			
+			// Need windowSize/2 (or 2*windowSize/2) slack to make sure that the borders are computed correctly
 			if (dest == p-1){
 				rowsToCompute += (windowSize/2);
 			}
@@ -38,6 +53,8 @@ int main(int argc, char** argv)
 			dim->height = rowsToCompute;
 			MPI_Send(dim, 2, MPI_INT, dest, tag, MPI_COMM_WORLD);
 		}
+		
+		// Set own size attributes
 		width = global_width;
 		height = global_height / p;
 		if (global_height % p != 0){
@@ -46,6 +63,7 @@ int main(int argc, char** argv)
 		height += (windowSize/2);
 	}
 
+	// Receive size attributes
 	else {	
 		my_dim = (Dimension*)malloc(sizeof(Dimension));
 		MPI_Recv(my_dim, 2, MPI_INT, 0, tag, MPI_COMM_WORLD, &status);
@@ -55,7 +73,7 @@ int main(int argc, char** argv)
 	}
 
 	
-
+	// Process 0 distributes rows
 	if (my_rank == 0){
 		offset = global_height / p;
 		if (global_height % p != 0){
@@ -86,14 +104,19 @@ int main(int argc, char** argv)
 			offset += rowsToCompute;
 		}		
 	}
+	
+	// Receive rows
 	else{
 
 		MPI_Recv(image, height*width*3, MPI_UNSIGNED_CHAR, 0, tag, MPI_COMM_WORLD, &status);
 	}
 	
-		
+	
+	// Process image	
 	filteredImage = processImage(width, height, image, windowSize, argv[4]);
 	
+	
+	// Send processed data back to P0
 	if (my_rank != 0 && my_rank != p-1){
 		MPI_Send(image + (windowSize/2)*width, (height-2*(windowSize/2))*width*3, MPI_UNSIGNED_CHAR, 0, tag, MPI_COMM_WORLD);
 	}
@@ -118,6 +141,7 @@ int main(int argc, char** argv)
 
 	}
 
+	// Process 0 writes processed PPM file
 	if (my_rank == 0){
 		writePPM(argv[2], global_width, global_height, max, filteredImage);
 		free(image);
