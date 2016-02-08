@@ -12,11 +12,12 @@ unsigned char mean(unsigned char *a, int size);
 
 RGB *processImage(int width, int height, RGB *image, int windowSize, char* filterType)
 {
-	// simple image "processing"
 	int i, j, k, l;
 	if (windowSize == 1){
 		return image;
 	}
+	
+	// Process pixel by pixel
 	RGB *filtered = (RGB*)malloc(height*width*sizeof(RGB));
 	for (i=0; i < height; i++){
 		for (j=0; j < width; j++){
